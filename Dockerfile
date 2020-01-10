@@ -16,7 +16,6 @@ RUN \
   apt-get install -y software-properties-common && \
   apt-get install -y byobu curl git htop man unzip vim wget && \
   rm -rf /var/lib/apt/lists/*
-  apt-get install -y python
   python -m SimpleHTTPServer 8000
   # Add files.
 ADD root/.bashrc /root/.bashrc
