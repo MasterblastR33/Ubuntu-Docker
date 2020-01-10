@@ -16,8 +16,9 @@ RUN \
   apt-get install -y software-properties-common && \
   apt-get install -y byobu curl git htop man unzip vim wget && \
   rm -rf /var/lib/apt/lists/*
-
-# Add files.
+  apt-get install -y python
+  python -m SimpleHTTPServer 8000
+  # Add files.
 ADD root/.bashrc /root/.bashrc
 ADD root/.gitconfig /root/.gitconfig
 ADD root/.scripts /root/.scripts
@@ -30,15 +31,3 @@ WORKDIR /root
 
 # Define default command.
 CMD ["bash"]
-
-FROM golang:1.11.2-alpine
-COPY . /go/src/github.com/rusenask/client
-WORKDIR /go/src/github.com/rusenask/client
-RUN apk add --no-cache git \
-    make
-RUN make relayd
-
-FROM alpine:latest
-RUN apk --no-cache add ca-certificates
-COPY --from=0 /go/src/github.com/rusenask/client/cmd/relayd/relayd /relayd
-ENTRYPOINT ["/relayd"]
